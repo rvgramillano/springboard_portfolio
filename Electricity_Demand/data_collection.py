@@ -5,6 +5,8 @@ import numpy as np
 
 EIA_API = ''
 
+WORKING_DIR = '/Users/rvg/Documents/springboard_ds/springboard_portfolio/Electricity_Demand/'
+
 def EIA_request_to_df(req, value_name):
 	'''
 	This function unpacks the JSON file into a pandas dataframe.'''
@@ -37,6 +39,11 @@ interchange_df = EIA_request_to_df(url_interchange, 'interchange')
 
 # merge dataframes to get all electricity data together
 electricity_df = demand_df.merge(generation_df, right_index=True, left_index=True, how='outer').merge(interchange_df, right_index=True, left_index=True, how='outer')
+
+# clean electricity_df of outlier values. this cut removes ~.01% of the data
+electricity_df = electricity_df[electricity_df['demand'] != 0]
+electricity_df = electricity_df[electricity_df['generation'] > 0]
+
 
 def fix_date(df):
     '''
@@ -107,9 +114,17 @@ def clean_sky_condition(df):
 	df['hourlyskyconditions'] = df['hourlyskyconditions'].astype('category')
 	return df
 
+def hourly_degree_days(df):
+	'''
+	This function adds hourly heating and cooling degree days to the weather DataFrame.'''
+	df['hourlycoolingdegrees'] = df['hourlydrybulbtempf'].apply(lambda x: x - 65. if x >= 65. else 0.)
+	df['hourlyheatingdegrees'] = df['hourlydrybulbtempf'].apply(lambda x: 65. - x if x <= 65. else 0.)
+
+	return df
+
 # collect weather data for los angeles
 
-weather_df = pd.read_csv('/Users/rvg/Documents/springboard_ds/LA_weather.csv')
+weather_df = pd.read_csv(WORKING_DIR + 'LA_weather.csv')
 # make columns lowercase for easier access
 weather_df.columns = [col.lower() for col in weather_df.columns]
 # make list of non-hourly columns to keep
@@ -157,6 +172,8 @@ weather_df['hourlydewpointtempf'] = weather_df['hourlydewpointtempf'].apply(lamb
 weather_df['hourlyprecip'][weather_df['hourlyprecip'] == 'T'] = 0.0
 weather_df['hourlyprecip'] = weather_df['hourlyprecip'].apply(lambda x: float(x) if str(x)[-1] != 's' else float(str(x)[:-1]))
 
+weather_df = hourly_degree_days(weather_df)
+
 
 '''
 in the following section I plot distributions of all the features to determine what columns should be filled by using the median
@@ -164,6 +181,7 @@ and which should be filled according to ffill. the features whose medians and me
 and that the median is a good choice for NaNs. conversely features whose median and means are further apart suggest the presence of outliers
 and in this case I use ffill because we are dealing with sequentially ordered data and values in previous time steps are useful
 in predicting values for later time steps'''
+
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -181,7 +199,8 @@ plt.tight_layout()
 ax[0].legend()
 ax[1].legend()
 ax[2].legend()
-plt.savefig('/Users/rvg/Documents/springboard_ds/Electricity_Demand/plots/electricity_data.png', dpi=350)
+plt.savefig(WORKING_DIR + 'plots/electricity_data.png', dpi=350)
+plt.close()
 
 # plot histograms and violin plots as well as some stats for electricity data
 for col in electricity_df.columns:
@@ -194,7 +213,8 @@ for col in electricity_df.columns:
 	ax[1].set_xlabel('%s [MWh]' % col)
 	ax[0].set_title(title_text, size=15)
 	plt.tight_layout()
-	plt.savefig('/Users/rvg/Documents/springboard_ds/Electricity_Demand/plots/%s_dist.png' % col, dpi=350)
+	plt.savefig(WORKING_DIR + 'plots/%s_dist.png' % col, dpi=350)
+	plt.close()
 
 # plot histograms and violin plots as well as some stats for weather data
 for col in weather_df.columns:
@@ -211,10 +231,12 @@ for col in weather_df.columns:
 	ax[1].set_xlabel('%s' % col)
 	ax[0].set_title(title_text, size=15)
 	plt.tight_layout()
-	plt.savefig('/Users/rvg/Documents/springboard_ds/Electricity_Demand/plots/%s_dist.png' % col, dpi=350)
+	plt.savefig(WORKING_DIR + 'plots/%s_dist.png' % col, dpi=350)
+	plt.close()
 
 # plot bar plot for categorical value
 weather_df['hourlyskyconditions'].value_counts().plot(kind='bar')
+plt.close()
 
 
 # cut DFs based on date to align properly
@@ -227,7 +249,7 @@ weather_set = set(cut_weather.index)
 weather_set.difference(elec_set)
 
 # based on the plots generated above, I choose certain columns to be filled with the median, others with ffill
-fill_dict = {'median': ['dailyheatingdegreedays', 'generation', 'hourlyaltimetersetting', 'hourlydrybulbtempf', 'hourlyprecip', 'hourlysealevelpressure', 'hourlystationpressure', 'hourlywetbulbtempf', 'interchange', 'dailycoolingdegreedays', 'hourlyvisibility', 'hourlywindspeed'], 'ffill': ['demand', 'hourlydewpointtempf', 'hourlyrelativehumidity']}
+fill_dict = {'median': ['dailyheatingdegreedays', 'generation', 'hourlyaltimetersetting', 'hourlydrybulbtempf', 'hourlyprecip', 'hourlysealevelpressure', 'hourlystationpressure', 'hourlywetbulbtempf', 'interchange', 'dailycoolingdegreedays', 'hourlyvisibility', 'hourlywindspeed', 'hourlycoolingdegrees', 'hourlyheatingdegrees'], 'ffill': ['demand', 'hourlydewpointtempf', 'hourlyrelativehumidity']}
 
 # fill electricity data NaNs
 for col in cut_electricity.columns:
@@ -248,3 +270,5 @@ for col in cut_weather.columns:
 # finally merge the data to get a complete dataframe for LA, ready for training
 final_df = cut_weather.merge(cut_electricity, right_index=True, left_index=True, how='inner')
 
+# save as pickle file
+final_df.to_pickle(WORKING_DIR + 'LA_df.pkl')
