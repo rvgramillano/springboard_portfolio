@@ -117,8 +117,8 @@ def clean_sky_condition(df):
 def hourly_degree_days(df):
 	'''
 	This function adds hourly heating and cooling degree days to the weather DataFrame.'''
-	df['hourlycoolingdegrees'] = df['hourlydrybulbtempf'].apply(lambda x: x - 65. if x >= 65. else 0.)
-	df['hourlyheatingdegrees'] = df['hourlydrybulbtempf'].apply(lambda x: 65. - x if x <= 65. else 0.)
+	df['hourlycoolingdegrees'] = df['hourlywetbulbtempf'].apply(lambda x: x - 65. if x >= 65. else 0.)
+	df['hourlyheatingdegrees'] = df['hourlywetbulbtempf'].apply(lambda x: 65. - x if x <= 65. else 0.)
 
 	return df
 
@@ -181,7 +181,7 @@ and which should be filled according to ffill. the features whose medians and me
 and that the median is a good choice for NaNs. conversely features whose median and means are further apart suggest the presence of outliers
 and in this case I use ffill because we are dealing with sequentially ordered data and values in previous time steps are useful
 in predicting values for later time steps'''
-
+'''
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -237,7 +237,7 @@ for col in weather_df.columns:
 # plot bar plot for categorical value
 weather_df['hourlyskyconditions'].value_counts().plot(kind='bar')
 plt.close()
-
+'''
 
 # cut DFs based on date to align properly
 cut_electricity = electricity_df[:'2018-09-01']
