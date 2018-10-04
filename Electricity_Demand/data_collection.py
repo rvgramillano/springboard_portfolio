@@ -19,6 +19,7 @@ def EIA_request_to_df(req, value_name):
 	df = pd.DataFrame({'date': dates, value_name: values})
 	df['date'] = pd.to_datetime(df['date'])
 	df = df.set_index('date')
+	df = df.sort_index()
 	return df
 
 
@@ -27,22 +28,10 @@ REGION_CODE = 'LDWP'
 
 # megawatthours
 url_demand = requests.get('http://api.eia.gov/series/?api_key=%s&series_id=EBA.%s-ALL.D.H' % (EIA_API, REGION_CODE)).json()
-demand_df = EIA_request_to_df(url_demand, 'demand')
-
-# megawatthours
-url_generation = requests.get('http://api.eia.gov/series/?api_key=%s&series_id=EBA.%s-ALL.NG.H' % (EIA_API, REGION_CODE)).json()
-generation_df = EIA_request_to_df(url_generation, 'generation')
-
-# megawatthours
-url_interchange = requests.get('http://api.eia.gov/series/?api_key=%s&series_id=EBA.%s-ALL.TI.H' % (EIA_API, REGION_CODE)).json()
-interchange_df = EIA_request_to_df(url_interchange, 'interchange')
-
-# merge dataframes to get all electricity data together
-electricity_df = demand_df.merge(generation_df, right_index=True, left_index=True, how='outer').merge(interchange_df, right_index=True, left_index=True, how='outer')
+electricity_df = EIA_request_to_df(url_demand, 'demand')
 
 # clean electricity_df of outlier values. this cut removes ~.01% of the data
 electricity_df = electricity_df[electricity_df['demand'] != 0]
-electricity_df = electricity_df[electricity_df['generation'] > 0]
 
 
 def fix_date(df):
@@ -181,26 +170,21 @@ and which should be filled according to ffill. the features whose medians and me
 and that the median is a good choice for NaNs. conversely features whose median and means are further apart suggest the presence of outliers
 and in this case I use ffill because we are dealing with sequentially ordered data and values in previous time steps are useful
 in predicting values for later time steps'''
-'''
+
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 # plot electricity data timestreams to see outliers
-fig,ax = plt.subplots(3,sharex=True)
-ax[0].plot(electricity_df['demand'], label='demand')
-ax[1].plot(electricity_df['generation'], label='generation')
-ax[2].plot(electricity_df['interchange'], label='interchange')
-ax[0].set_title('Electricity data')
-ax[0].set_ylabel('MWh')
-ax[1].set_ylabel('MWh')
-ax[2].set_ylabel('MWh')
-ax[2].set_xlabel('Date')
+fig,ax = plt.subplots()
+ax.plot(electricity_df['demand'], label='demand')
+ax.set_title('Electricity data')
+ax.set_ylabel('MWh')
+ax.set_xlabel('Date')
 plt.tight_layout()
-ax[0].legend()
-ax[1].legend()
-ax[2].legend()
-plt.savefig(WORKING_DIR + 'plots/electricity_data.png', dpi=350)
+ax.legend()
+plt.savefig(WORKING_DIR + 'plots/distributions/electricity_data.png', dpi=350)
 plt.close()
+
 
 # plot histograms and violin plots as well as some stats for electricity data
 for col in electricity_df.columns:
@@ -213,7 +197,7 @@ for col in electricity_df.columns:
 	ax[1].set_xlabel('%s [MWh]' % col)
 	ax[0].set_title(title_text, size=15)
 	plt.tight_layout()
-	plt.savefig(WORKING_DIR + 'plots/%s_dist.png' % col, dpi=350)
+	plt.savefig(WORKING_DIR + 'plots/distributions/%s_dist.png' % col, dpi=350)
 	plt.close()
 
 # plot histograms and violin plots as well as some stats for weather data
@@ -231,13 +215,13 @@ for col in weather_df.columns:
 	ax[1].set_xlabel('%s' % col)
 	ax[0].set_title(title_text, size=15)
 	plt.tight_layout()
-	plt.savefig(WORKING_DIR + 'plots/%s_dist.png' % col, dpi=350)
+	plt.savefig(WORKING_DIR + 'plots/distributions/%s_dist.png' % col, dpi=350)
 	plt.close()
 
 # plot bar plot for categorical value
 weather_df['hourlyskyconditions'].value_counts().plot(kind='bar')
 plt.close()
-'''
+
 
 # cut DFs based on date to align properly
 cut_electricity = electricity_df[:'2018-09-01']
@@ -249,7 +233,7 @@ weather_set = set(cut_weather.index)
 weather_set.difference(elec_set)
 
 # based on the plots generated above, I choose certain columns to be filled with the median, others with ffill
-fill_dict = {'median': ['dailyheatingdegreedays', 'generation', 'hourlyaltimetersetting', 'hourlydrybulbtempf', 'hourlyprecip', 'hourlysealevelpressure', 'hourlystationpressure', 'hourlywetbulbtempf', 'interchange', 'dailycoolingdegreedays', 'hourlyvisibility', 'hourlywindspeed', 'hourlycoolingdegrees', 'hourlyheatingdegrees'], 'ffill': ['demand', 'hourlydewpointtempf', 'hourlyrelativehumidity']}
+fill_dict = {'median': ['dailyheatingdegreedays', 'hourlyaltimetersetting', 'hourlydrybulbtempf', 'hourlyprecip', 'hourlysealevelpressure', 'hourlystationpressure', 'hourlywetbulbtempf', 'dailycoolingdegreedays', 'hourlyvisibility', 'hourlywindspeed', 'hourlycoolingdegrees', 'hourlyheatingdegrees'], 'ffill': ['demand', 'hourlydewpointtempf', 'hourlyrelativehumidity']}
 
 # fill electricity data NaNs
 for col in cut_electricity.columns:
