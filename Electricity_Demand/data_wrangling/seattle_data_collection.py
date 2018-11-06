@@ -32,7 +32,7 @@ REGION_CODE = 'SCL'
 url_demand = requests.get('http://api.eia.gov/series/?api_key=%s&series_id=EBA.%s-ALL.D.H' % (EIA_API, REGION_CODE)).json()
 electricity_df = EIA_request_to_df(url_demand, 'demand')
 
-# clean electricity_df of outlier values. this cut removes ~.3% of the data
+# clean electricity_df of outlier values. these cuts removes ~.3% of the data
 electricity_df = electricity_df[electricity_df['demand'] != 0]
 electricity_df = electricity_df[electricity_df['demand'] < 10000]
 electricity_df = electricity_df[electricity_df['demand'] > 600]
@@ -129,7 +129,7 @@ def hourly_degree_days(df):
 
 	return df
 
-# collect weather data for los angeles
+# collect weather data for seattle
 
 weather_df = pd.read_csv(WORKING_DIR + '%s_weather.csv' % CITY)
 # make columns lowercase for easier access
