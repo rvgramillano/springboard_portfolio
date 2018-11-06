@@ -5,8 +5,8 @@ import numpy as np
 
 WORKING_DIR = '/Users/rvg/Documents/springboard_ds/springboard_portfolio/Electricity_Demand/'
 
-la_df = pd.read_pickle(WORKING_DIR + 'LA_df.pkl')
-seattle_df = pd.read_pickle(WORKING_DIR + 'seattle_df.pkl')
+la_df = pd.read_pickle(WORKING_DIR + 'data/LA_df.pkl')
+seattle_df = pd.read_pickle(WORKING_DIR + 'data/seattle_df.pkl')
 
 def multiple_regression(df, name):
 	# still need to work on changing the categorical value 'hourlyskyconditions' to numeric
