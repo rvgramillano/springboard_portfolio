@@ -40,7 +40,7 @@ for col in la_df.columns:
 
 
 # change depending on which city to analyze
-df = la_df.copy()
+df = seattle_df.copy()
 
 # get pearson correlation coefficients for demand
 print('DEMAND CORRELATIONS (PEARSON) FOR SEATTLE')
@@ -49,13 +49,13 @@ print(df.corr()['demand'].sort_values(ascending=False)[1:])
 # get r^2 values per column and print
 demand_r = {}
 for col in df.columns:
-	if col == 'hourlyskyconditions': continue
+	#if col == 'hourlyskyconditions': continue
 	if col != 'demand':
 		slope, intercept, r_value, p_value, std_err = scipy.stats.stats.linregress(df['demand'], df[col])
 		demand_r[col] = r_value**2
 
 
-print('DEMAND CORRELATIONS (r^2) FOR SEATTLE')
+print('DEMAND CORRELATIONS (r^2) FOR LA')
 demand_r_df = pd.DataFrame({'col': demand_r.keys(), 'r^2': demand_r.values()})
 print(demand_r_df.sort_values(by='r^2', ascending=False))
 
@@ -67,43 +67,29 @@ medians = df.median()
 df_stats = pd.DataFrame({'std': stds, 'mean': means, 'median': medians})
 print(df_stats.sort_values('std', ascending=False))
 
-# below we perform hypothesis testing with the HDD and CDD features to determine the significance of their relationships with electrictiy demand
-demand_p = {}
-def pearson_r(x, y):
-    """Compute Pearson correlation coefficient between two arrays."""
-    # Compute correlation matrix: corr_mat
-    corr_mat = np.corrcoef(x,y)   
-    
-    return corr_mat[0,1]
+# below we generate collinearity plots for temperature and pressure
 
-for col in ['dailycoolingdegreedays', 'dailyheatingdegreedays', 'hourlyheatingdegrees', 'hourlycoolingdegrees']:
-	#if col=='demand' or col == 'hourlyskyconditions': continue
-	print col
-	# y-variable
-	y = np.array(df['demand'])
-	
-	# x-variable
-	x = np.array(df[col])
-	
-	# Compute observed correlation: r_obs
-	r_obs = pearson_r(x, y)
-	
-	# Initialize permutation replicates: perm_replicates
-	perm_replicates = np.empty(10000)
-	print r_obs
-	# Draw replicates
-	for i in range(10000):
-	    # Permute illiteracy measurments: illiteracy_permuted
-	    x_permuted = np.random.permutation(x)
-	
-	    # Compute Pearson correlation
-	    perm_replicates[i] = pearson_r(x_permuted, y)
-	
-	# Compute p-value: p
-	if r_obs > 0:
-		p = np.sum(perm_replicates >= r_obs) / float(len(perm_replicates))
-	elif r_obs < 0:
-		p = np.sum(perm_replicates <= r_obs) / float(len(perm_replicates))
-	demand_p[col] = p
-	print 'p-value = %.8f' % p
+# pressure
+for col in df.columns:
+	if col not in ['hourlyaltimetersetting', 'hourlysealevelpressure', 'hourlystationpressure']:
+		df = df.drop(col, axis=1)
+from pandas.tools.plotting import scatter_matrix
+axarr = scatter_matrix(df, alpha=.2)
+ax = axarr[0,0]
+labels = [item.get_text() for item in ax.get_yticklabels()]
+ax.set_yticklabels([str(round(float(label), 2)) for label in labels])
+plt.tight_layout()
+plt.savefig(WORKING_DIR + 'plots/EDA/pressure_collin_seattle.png', dpi=300)
+plt.close()
+
+# temperature
+df = seattle_df.copy()
+for col in df.columns:
+	if col not in ['hourlywetbulbtempf', 'hourlydrybulbtempf', 'hourlydewpointtempf']:
+		df = df.drop(col, axis=1)
+from pandas.tools.plotting import scatter_matrix
+axarr = scatter_matrix(df, alpha=.2)
+plt.tight_layout()
+plt.savefig(WORKING_DIR + 'plots/EDA/temp_collin_seattle.png', dpi=300)
+plt.close()
 
