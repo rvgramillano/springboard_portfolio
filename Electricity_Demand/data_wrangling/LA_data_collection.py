@@ -212,7 +212,6 @@ for col in weather_df.columns:
 weather_df['hourlyskyconditions'].value_counts().plot(kind='bar')
 plt.close()
 
-
 # cut DFs based on date to align properly
 cut_electricity = electricity_df[:'2018-09-01']
 cut_weather = weather_df[cut_electricity.index.min():'2018-09-01']
