@@ -13,8 +13,6 @@ seattle_df = pd.read_pickle(WORKING_DIR + 'data/seattle_df.pkl')
 #r^2 seattle: from .419 -> .418
 #r^2 LA: from .686 -> .649
 def multiple_regression(df, name):
-	# still need to work on changing the categorical value 'hourlyskyconditions' to numeric
-	#print [col for col in df.columns if col != 'demand' and col!='hourlyskyconditions']
 	X = df[[col for col in df.columns if col != 'demand']]
 	y = df['demand']
 	X = sm.add_constant(X) ## let's add an intercept (beta_0) to our model

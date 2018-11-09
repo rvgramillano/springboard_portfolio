@@ -3,7 +3,7 @@ from datetime import datetime
 import requests
 import numpy as np
 
-EIA_API = ''
+EIA_API = '70b5193b6dcb775ee0a0d947bc60f55a'
 
 WORKING_DIR = '/Users/rvg/Documents/springboard_ds/springboard_portfolio/Electricity_Demand/'
 
@@ -16,6 +16,8 @@ def EIA_request_to_df(req, value_name):
 	dates = []
 	values = []
 	for date, value in dat:
+		if value is None:
+			continue
 		dates.append(date)
 		values.append(float(value))
 	df = pd.DataFrame({'date': dates, value_name: values})
@@ -116,6 +118,8 @@ def clean_sky_condition(df):
 				condition_code = condition[colon_position - 2 : colon_position]
 			else:
 				condition_code = condition[colon_position - 3 : colon_position]
+			if condition_code=='':
+				condition_code = np.nan
 			new_condition.append(condition_code)
 	df['hourlyskyconditions'] = new_condition
 	df['hourlyskyconditions'] = df['hourlyskyconditions'].astype('category')
