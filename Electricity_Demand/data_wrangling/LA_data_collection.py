@@ -3,7 +3,7 @@ from datetime import datetime
 import requests
 import numpy as np
 
-EIA_API = ''
+EIA_API = '70b5193b6dcb775ee0a0d947bc60f55a'
 
 WORKING_DIR = '/Users/rvg/Documents/springboard_ds/springboard_portfolio/Electricity_Demand/'
 
@@ -16,6 +16,8 @@ def EIA_request_to_df(req, value_name):
 	dates = []
 	values = []
 	for date, value in dat:
+		if value is None:
+			continue
 		dates.append(date)
 		values.append(float(value))
 	df = pd.DataFrame({'date': dates, value_name: values})
@@ -244,4 +246,4 @@ for col in cut_weather.columns:
 final_df = cut_weather.merge(cut_electricity, right_index=True, left_index=True, how='inner')
 
 # save as pickle file
-final_df.to_pickle(WORKING_DIR + 'data/%s_df.pkl' % CITY)
+final_df.to_pickle(WORKING_DIR + 'data/%s_df_first.pkl' % CITY)

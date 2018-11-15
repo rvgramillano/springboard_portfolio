@@ -273,4 +273,4 @@ for col in cut_weather.columns:
 final_df = cut_weather.merge(cut_electricity, right_index=True, left_index=True, how='inner')
 
 # save as pickle file
-final_df.to_pickle(WORKING_DIR + 'data/%s_df.pkl' % CITY)
+final_df.to_pickle(WORKING_DIR + 'data/%s_df_first.pkl' % CITY)

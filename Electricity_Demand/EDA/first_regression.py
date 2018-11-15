@@ -2,6 +2,7 @@ import pandas as pd
 import statsmodels.api as sm 
 import pickle
 import numpy as np
+import scipy.stats as stats
 
 WORKING_DIR = '/Users/rvg/Documents/springboard_ds/springboard_portfolio/Electricity_Demand/'
 
@@ -9,9 +10,6 @@ la_df = pd.read_pickle(WORKING_DIR + 'data/LA_df.pkl')
 
 seattle_df = pd.read_pickle(WORKING_DIR + 'data/seattle_df.pkl')
 
-
-#r^2 seattle: from .419 -> .418
-#r^2 LA: from .686 -> .649
 def multiple_regression(df, name):
 	X = df[[col for col in df.columns if col != 'demand']]
 	y = df['demand']
@@ -22,9 +20,16 @@ def multiple_regression(df, name):
 	
 	print('------------------%s------------------'%name)
 	print(model.summary())
+	return model
 
-# with time of day:
-#LA: .686 -> .701
-#Seattle: .419 -> .587
-multiple_regression(la_df, 'LOS ANGELES')
-multiple_regression(seattle_df, 'SEATTLE')
+m_la = multiple_regression(la_df, 'LOS ANGELES')
+m_seattle = multiple_regression(seattle_df, 'SEATTLE')
+
+# drop high p-value columns and save
+la_df = la_df.drop(['hourlywindspeed', 'hourlyheatingdegrees', 'hourlyskyconditions_BKN', 'hourlyskyconditions_FEW', 'hourlyskyconditions_OVC', 'hourlyskyconditions_SCT'], axis=1)
+seattle_df = seattle_df.drop(['hourlywindspeed','hourlyvisibility', 'hourlycoolingdegrees', 'hourlyskyconditions_CLR','hourlyskyconditions_BKN', 'hourlyskyconditions_FEW', 'hourlyskyconditions_OVC', 'hourlyskyconditions_SCT'], axis=1)
+
+
+la_df.to_pickle(WORKING_DIR + 'data/LA_df_final.pkl')
+seattle_df.to_pickle(WORKING_DIR + 'data/seattle_df_final.pkl')
+

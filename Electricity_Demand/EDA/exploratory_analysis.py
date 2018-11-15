@@ -6,8 +6,12 @@ import seaborn as sns
 
 WORKING_DIR = '/Users/rvg/Documents/springboard_ds/springboard_portfolio/Electricity_Demand/'
 
-la_df = pd.read_pickle(WORKING_DIR + 'data/LA_df.pkl')
-seattle_df = pd.read_pickle(WORKING_DIR + 'data/seattle_df.pkl')
+la_df = pd.read_pickle(WORKING_DIR + 'data/LA_df_first.pkl')
+seattle_df = pd.read_pickle(WORKING_DIR + 'data/seattle_df_first.pkl')
+la_df = pd.get_dummies(la_df)
+la_df = la_df.drop(['hourlyskyconditions_VV'], axis=1)
+seattle_df = pd.get_dummies(seattle_df)
+seattle_df = seattle_df.drop(['hourlyskyconditions_VV'], axis=1)
 
 # plot electricity data timestreams to see outliers
 fig,ax = plt.subplots()
@@ -55,7 +59,7 @@ for col in df.columns:
 		demand_r[col] = r_value**2
 
 
-print('DEMAND CORRELATIONS (r^2) FOR LA')
+print('DEMAND CORRELATIONS (r^2) FOR SEATTLE')
 demand_r_df = pd.DataFrame({'col': demand_r.keys(), 'r^2': demand_r.values()})
 print(demand_r_df.sort_values(by='r^2', ascending=False))
 
