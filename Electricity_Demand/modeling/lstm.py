@@ -123,6 +123,8 @@ history = model.fit(train_X, train_y, epochs=50, batch_size=72, validation_data=
 # plot history
 plt.plot(history.history['loss'], label='train')
 plt.plot(history.history['val_loss'], label='test')
+plt.xlabel('Epoch')
+plt.ylabel('Loss (MAE)')
 plt.legend()
 plt.show()
 
