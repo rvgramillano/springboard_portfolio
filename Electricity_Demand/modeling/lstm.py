@@ -1,13 +1,17 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from datetime import datetime
+import requests
+import warnings
+warnings.filterwarnings('ignore')
 
-from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, r2_score
 
 from keras.models import Sequential
 from keras.layers import Dense, LSTM
+
 def series_to_supervised(data,  col_names, n_in=1, n_out=1, dropnan=True):
 	"""
 	Frame a time series as a supervised learning dataset.
@@ -149,7 +153,68 @@ inv_y = scaler.inverse_transform(inv_y)
 inv_y = inv_y[:,0]
 # calculate RMSE
 rmse = np.sqrt(mean_squared_error(inv_y, inv_yhat))
-print('Test RMSE: %.3f' % rmse)
+rsq = r2_score(inv_y, inv_yhat)
+print('Test RMSE: %.5f' % rmse)
+print('Test r^2: %.5f' % rsq)
+
+
+
+
+
+EIA_API = '70b5193b6dcb775ee0a0d947bc60f55a'
+
+def EIA_request_to_df(req, value_name):
+	'''
+	This function unpacks the JSON file into a pandas dataframe.'''
+	dat = req['series'][0]['data']
+	dates = []
+	values = []
+	for date, value in dat:
+		if value is None:
+			continue
+		dates.append(date)
+		values.append(float(value))
+	df = pd.DataFrame({'date': dates, value_name: values})
+	df['date'] = pd.to_datetime(df['date'])
+	df = df.set_index('date')
+	df = df.sort_index()
+	return df
+
+
+# collect electricty data for Los Angeles
+REGION_CODE = 'LDWP'
+
+# megawatthours
+url_demand_forecast = requests.get('http://api.eia.gov/series/?api_key=%s&series_id=EBA.%s-ALL.DF.H' % (EIA_API, REGION_CODE)).json()
+electricity_df = EIA_request_to_df(url_demand_forecast, 'demand_forecast')
+
+# cut demand forecast in the same way we did for demand
+cut_electricity = electricity_df[:'2018-09-01']
+elec_i = dataset[['demand']]
+
+# join demand forecast with demand to align dataframes
+elec_join = elec_i.join(cut_electricity, how='left')
+# delete first entry; this is what was done in the beginning to frame the problem as supervised (features at t-1 and features at t requires deleting the first element)
+elec_join = elec_join.iloc[1:]
+# cut demand forecast just as we did for testing data set 
+electricity_compare = elec_join[['demand_forecast']].values[n_train_hours:, :]
+# find indices where no value was recorded for demand forecast
+nan_inds = np.where(np.isnan(electricity_compare)==True)[0]
+# print how many nan values we have for demand forecast--it's ~.15%
+nan_percent = len(nan_inds) / float(len(electricity_compare))
+print('percent missing from demand forecast: %.5f' % (nan_percent*100))
+# get non-nan inds for cutting
+non_nan_inds = np.where(np.isnan(electricity_compare)!=True)[0]
+# remove nan values from demand forecast
+electricity_compare_cut = electricity_compare[non_nan_inds].flatten()
+# remove those same values from the actual demand to keep consistent
+inv_y_cut = inv_y[non_nan_inds]
+# compute rmse
+forecast_rmse = np.sqrt(mean_squared_error(inv_y_cut, electricity_compare_cut))
+forecast_rsq = r2_score(inv_y_cut, electricity_compare_cut)
+
+print('Forecast RMSE: %.3f' % forecast_rmse)
+print('Forecast r^2: %.3f' % forecast_rsq)
 
 
 

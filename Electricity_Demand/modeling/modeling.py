@@ -3,17 +3,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import time
+import warnings
+warnings.filterwarnings('ignore')
 
-from scipy.stats import randint
-
-from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split
-from sklearn.model_selection import RandomizedSearchCV
-from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import roc_auc_score
-from sklearn.model_selection import cross_val_score
-from sklearn.metrics import roc_curve
+from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 
 from sklearn.linear_model import LinearRegression
@@ -25,292 +20,229 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import BaggingRegressor
 from sklearn.ensemble import AdaBoostRegressor
 
-WORKING_DIR = '/Users/rvg/Documents/springboard_ds/springboard_portfolio/Electricity_Demand/'
+def series_to_supervised(data,  col_names, n_in=1, n_out=1, dropnan=True):
+  """
+  Frame a time series as a supervised learning dataset.
+  Arguments:
+    data: Sequence of observations as a list or NumPy array.
+    n_in: Number of lag observations as input (X).
+    n_out: Number of observations as output (y).
+    dropnan: Boolean whether or not to drop rows with NaN values.
+  Returns:
+    Pandas DataFrame of series framed for supervised learning.
+  """
+  n_vars = 1 if type(data) is list else data.shape[1]
+  df = pd.DataFrame(data)
+  cols, names = list(), list()
+  # input sequence (t-n, ... t-1)
+  for i in range(n_in, 0, -1):
+    cols.append(df.shift(i))
+    names += [('%s(t-%d)' % (col_names[j], i)) for j in range(n_vars)]
+  # forecast sequence (t, t+1, ... t+n)
+  for i in range(0, n_out):
+    cols.append(df.shift(-i))
+    if i == 0:
+      names += [('%s(t)' % (col_names[j])) for j in range(n_vars)]
+    else:
+      names += [('%s(t+%d)' % (col_names[j], i)) for j in range(n_vars)]
+  # put it all together
+  agg = pd.concat(cols, axis=1)
+  agg.columns = names
+  # drop rows with NaN values
+  if dropnan:
+    agg.dropna(inplace=True)
+  return agg
 
-la_df = pd.read_pickle(WORKING_DIR + 'data/LA_df.pkl')
-
-seattle_df = pd.read_pickle(WORKING_DIR + 'data/seattle_df.pkl')
-
-df = la_df.copy()
-
-y = df[['demand']]
-X = df.drop(['demand'], axis=1)
-
-def evaluate(model, X, y, X_test, y_test, m_name):
-	#y_pred_prob = model.predict_proba(X_test)[:,1]
+def evaluate(model, X_test, y_test, m_name):
 	y_pred = model.predict(X_test)
 
 	# Compute and print the metrics
 	r2 = model.score(X_test, y_test)
 	rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 
-	# Generate ROC curve values: fpr, tpr, thresholds
-	#fpr, tpr, thresholds = roc_curve(y_test, y_pred_prob)
-
-	#auc_score = roc_auc_score(y_test, y_pred_prob)
-
-	#metrics
-	adj_r2 = 1 - (1-r2)*(len(y)-1)/(len(y)-X.shape[1]-1)
-
-	# Plot ROC curve
-	#plt.plot([0, 1], [0, 1], 'k--')
-	#plt.plot(fpr, tpr)
-	#plt.xlabel('False Positive Rate')
-	#plt.ylabel('True Positive Rate')
-	#plt.title('ROC Curve for %s' % m_name)
-	#plt.save_fig(WORKING_DIR + 'plots/modeling/%s_roc.png' % m_name, dpi=300)
-	#plt.show()
-	#raw_input('...')
-	#plt.close()
 	print m_name
 	print '---------------------'
 	print 'R^2: %.4f' % r2
-	print 'adj R^2: %.4f' % adj_r2
 	print 'Root MSE: %.4f' % rmse
 
-	return r2, adj_r2, rmse
+	return r2, rmse
 
 
-X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=.2,random_state=42)
+WORKING_DIR = '/Users/rvg/Documents/springboard_ds/springboard_portfolio/Electricity_Demand/'
+
+df = pd.read_pickle(WORKING_DIR + 'data/LA_df.pkl')
+
+#set the column we want to predict (demand) to the first columns for consistency
+cols = list(df.columns)
+cols.remove('demand')
+cols.insert(0,'demand')
+df = df[cols]
+
+values = df.values
+# ensure all data is float
+values = values.astype('float32')
+# frame as supervised learning
+reframed = series_to_supervised(values, df.columns, 1, 1)
+# drop columns we don't want to predict
+reframed.drop(reframed.columns[[18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33]], axis=1, inplace=True)
+
+'''
+y = reframed[['demand(t)']]
+X = reframed.drop(['demand(t)'], axis=1)
+
+training_size = 8760. / (18294. + 8760.)
+testing_size = 1. - training_size
+
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=testing_size,random_state=42)
+'''
+
+values = reframed.values
+n_train_hours = 365 * 24
+train = values[:n_train_hours, :]
+test = values[n_train_hours:, :]
+# split into input and outputs
+X_train, y_train = train[:, :-1], train[:, -1]
+X_test, y_test = test[:, :-1], test[:, -1]
+# reshape input to be 3D [samples, timesteps, features]
+#train_X = train_X.reshape((train_X.shape[0], 1, train_X.shape[1]))
+#test_X = test_X.reshape((test_X.shape[0], 1, test_X.shape[1]))
+#print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
+
+
+
+r2 = []
+rmse = []
+name = []
+
 
 ### LINEAR REGRESSION ###
-t_start = time.time()
-# Setup the pipeline steps: steps
-steps = [('scaler', StandardScaler()),
+# Create the model pipeline
+steps = [('scaler', MinMaxScaler(feature_range=(0, 1))),
          ('linearregression', LinearRegression())]
 
-# Create the pipeline: pipeline 
 pipeline = Pipeline(steps)
 
 # Fit to the training set
 pipeline.fit(X_train, y_train)
 
-r2, adj_r2, mse = evaluate(pipeline, X, y, X_test, y_test, 'Linear Regression')
-print('time elapsed = %.2f sec' % (time.time() - t_start) )
-print('\n')
+# Evaluate model
+r2_score, rmse_score = evaluate(pipeline, X_test, y_test, 'Linear Regression')
 
-
-
-
-
-
-### ELASTIC NET REGRESSION ###
-t_start = time.time()
-#alpha=1
-# Setup the pipeline steps: steps
-steps = [('scaler', StandardScaler()),
-         ('elasticnet', ElasticNet())]
-
-# Create the pipeline: pipeline 
-pipeline = Pipeline(steps)
-
-parameters = {'elasticnet__l1_ratio':np.linspace(0,1,30),'elasticnet__alpha':np.linspace(.1,10,10)}
-
-# Create the RandomizedSearchCV object: rm_cv
-gm_cv = GridSearchCV(pipeline, parameters, cv=5)
-
-# Fit to the training set
-gm_cv.fit(X_train,y_train)
-
-m = gm_cv.best_estimator_
-print(gm_cv.best_params_)
-
-r2, adj_r2, mse = evaluate(m, X, y, X_test, y_test, 'ElasticNet')
-print('time elapsed = %.2f sec' % (time.time() - t_start) )
-print('\n')
-
-
-
-
+r2.append(r2_score)
+rmse.append(rmse_score)
+name.append('Linear Regression')
 
 
 ### DESCISION TREE REGRESSION ###
-t_start = time.time()
-# Setup the pipeline steps: steps
-steps = [('scaler', StandardScaler()),
-         ('DecisionTreeRegressor', DecisionTreeRegressor())]
+# Create the model pipeline
+steps = [('scaler', MinMaxScaler(feature_range=(0, 1))),
+         ('elasticnet', DecisionTreeRegressor())]
 
-# Create the pipeline: pipeline 
 pipeline = Pipeline(steps)
 
-parameters = {"DecisionTreeRegressor__max_depth": [3, None],
-              "DecisionTreeRegressor__max_features": randint(1, X.shape[1]),
-              "DecisionTreeRegressor__min_samples_leaf": randint(1, 9),
-              "DecisionTreeRegressor__criterion": ["mae", "mse"]}
+# Fit to the training set
+pipeline.fit(X_train, y_train)
 
-# Create the RandomizedSearchCV object: rm_cv
-rm_cv = RandomizedSearchCV(pipeline, parameters, cv=5)
+# Evaluate model
+r2_score, rmse_score = evaluate(pipeline, X_test, y_test, 'Decision Tree')
 
-rm_cv.fit(X_train,y_train)
-
-m = rm_cv.best_estimator_
-print(rm_cv.best_params_)
-
-r2, adj_r2, mse = evaluate(m, X, y, X_test, y_test, 'Decision Tree')
-print('time elapsed = %.2f sec' % (time.time() - t_start) )
-print('\n')
-
-
+r2.append(r2_score)
+rmse.append(rmse_score)
+name.append('Decision Tree')
 
 
 ### KNN REGRESSION ###
-##long time to hypertune, even with random search##
-print('default settings')
-t_start = time.time()
-# Setup the pipeline steps: steps
-steps = [('scaler', StandardScaler()),
-         ('KNeighborsRegressor', KNeighborsRegressor())]
+# Create the model pipeline
+steps = [('scaler', MinMaxScaler(feature_range=(0, 1))),
+         ('k-NN', KNeighborsRegressor())]
 
-# Create the pipeline: pipeline 
 pipeline = Pipeline(steps)
 
-parameters = {"KNeighborsRegressor__n_neighbors": np.arange(3,6)}#,
-              #"KNeighborsRegressor__weights": ['uniform', 'distance'],
-              #"KNeighborsRegressor__leaf_size": randint(30,60),
-              #"KNeighborsRegressor__metric": ["minkowski", "euclidean", 'manhattan']}
+# Fit to the training set
+pipeline.fit(X_train, y_train)
 
-# Create the GridSearchCV object: rm_cv
-#gm_cv = GridSearchCV(pipeline, parameters, cv=5)
+# Evaluate model
+r2_score, rmse_score = evaluate(pipeline, X_test, y_test, 'k-NN')
 
-#gm_cv.fit(X_train,y_train)
-pipeline.fit(X_train,y_train)
-
-#m = gm_cv.best_estimator_
-#print(gm_cv.best_params_)
-
-r2, adj_r2, mse = evaluate(pipeline, X, y, X_test, y_test, 'k-NN')
-print('time elapsed = %.2f sec' % (time.time() - t_start) )
-print('\n')
-
+r2.append(r2_score)
+rmse.append(rmse_score)
+name.append('k-NN')
 
 
 ### RANDOM FOREST REGRESSION ###
-##long time to hypertune, even with random search##
-print('default settings')
-t_start = time.time()
-# Setup the pipeline steps: steps
-steps = [('scaler', StandardScaler()),
-         ('RandomForestRegressor', RandomForestRegressor())]
+# Create the model pipeline
+steps = [('scaler', MinMaxScaler(feature_range=(0, 1))),
+         ('randomforest', RandomForestRegressor())]
 
-# Create the pipeline: pipeline 
 pipeline = Pipeline(steps)
 
-parameters = {"RandomForestRegressor__n_estimators": randint(10,51),
-              "RandomForestRegressor__max_depth": [3, None],
-              "RandomForestRegressor__min_samples_leaf": randint(1, 9),
-              "RandomForestRegressor__criterion": ["mae", "mse"],
-              "RandomForestRegressor__max_features": randint(1, X.shape[1])}
+# Fit to the training set
+pipeline.fit(X_train, y_train)
 
-# Create the RandomizedSearchCV object: rm_cv
-#rm_cv = RandomizedSearchCV(pipeline, parameters, cv=5)
+# Evaluate model
+r2_score, rmse_score = evaluate(pipeline, X_test, y_test, 'Random Forest')
 
-#rm_cv.fit(X_train,y_train)
-pipeline.fit(X_train,y_train)
-
-#m = rm_cv.best_estimator_
-
-r2, adj_r2, mse = evaluate(pipeline, X, y, X_test, y_test, 'Random Forest')
-print('time elapsed = %.2f sec' % (time.time() - t_start) )
-print('\n')
-
-
-
-
+r2.append(r2_score)
+rmse.append(rmse_score)
+name.append('Random Forest')
 
 
 ### GRADIENT BOOSTING REGRESSION ###
-t_start = time.time()
-# Setup the pipeline steps: steps
-steps = [('scaler', StandardScaler()),
-         ('GradientBoostingRegressor', GradientBoostingRegressor())]
+# Create the model pipeline
+steps = [('scaler', MinMaxScaler(feature_range=(0, 1))),
+         ('gradboost', GradientBoostingRegressor())]
 
-# Create the pipeline: pipeline 
 pipeline = Pipeline(steps)
 
-parameters = {"RandomForestRegressor__n_estimators": randint(10,51),
-              "RandomForestRegressor__max_depth": [3, None],
-              "RandomForestRegressor__min_samples_leaf": randint(1, 9),
-              "RandomForestRegressor__criterion": ["mae", "mse"],
-              "RandomForestRegressor__max_features": randint(1, X.shape[1])}
+# Fit to the training set
+pipeline.fit(X_train, y_train)
 
-# Create the RandomizedSearchCV object: rm_cv
-#rm_cv = RandomizedSearchCV(pipeline, parameters, cv=5)
+# Evaluate model
+r2_score, rmse_score = evaluate(pipeline, X_test, y_test, 'Gradient Boosting')
 
-#rm_cv.fit(X_train,y_train)
-pipeline.fit(X_train,y_train)
-
-#m = rm_cv.best_estimator_
-
-r2, adj_r2, mse = evaluate(pipeline, X, y, X_test, y_test, 'Gradient Boosting')
-print('time elapsed = %.2f sec' % (time.time() - t_start) )
-print('\n')
-
-
-
-
-
-
+r2.append(r2_score)
+rmse.append(rmse_score)
+name.append('Gradient Boosting')
 
 
 ### BAGGING REGRESSION ###
-t_start = time.time()
-# Setup the pipeline steps: steps
-steps = [('scaler', StandardScaler()),
-         ('BaggingRegressor', BaggingRegressor())]
+# Create the model pipeline
+steps = [('scaler', MinMaxScaler(feature_range=(0, 1))),
+         ('Bagging', BaggingRegressor())]
 
-# Create the pipeline: pipeline 
 pipeline = Pipeline(steps)
 
-parameters = {"RandomForestRegressor__n_estimators": randint(10,51),
-              "RandomForestRegressor__max_depth": [3, None],
-              "RandomForestRegressor__min_samples_leaf": randint(1, 9),
-              "RandomForestRegressor__criterion": ["mae", "mse"],
-              "RandomForestRegressor__max_features": randint(1, X.shape[1])}
+# Fit to the training set
+pipeline.fit(X_train, y_train)
 
-# Create the RandomizedSearchCV object: rm_cv
-#rm_cv = RandomizedSearchCV(pipeline, parameters, cv=5)
+# Evaluate model
+r2_score, rmse_score = evaluate(pipeline, X_test, y_test, 'Bagging')
 
-#rm_cv.fit(X_train,y_train)
-pipeline.fit(X_train,y_train)
-
-#m = rm_cv.best_estimator_
-
-r2, adj_r2, mse = evaluate(pipeline, X, y, X_test, y_test, 'Bagging')
-print('time elapsed = %.2f sec' % (time.time() - t_start) )
-print('\n')
-
-
-
-
-
-
+r2.append(r2_score)
+rmse.append(rmse_score)
+name.append('Bagging')
 
 
 
 ### ADABOOST REGRESSION ###
-t_start = time.time()
-# Setup the pipeline steps: steps
-steps = [('scaler', StandardScaler()),
-         ('AdaBoostRegressor', AdaBoostRegressor())]
+# Create the model pipeline
+steps = [('scaler', MinMaxScaler(feature_range=(0, 1))),
+         ('adaboost', AdaBoostRegressor())]
 
-# Create the pipeline: pipeline 
 pipeline = Pipeline(steps)
 
-parameters = {"RandomForestRegressor__n_estimators": randint(10,51),
-              "RandomForestRegressor__max_depth": [3, None],
-              "RandomForestRegressor__min_samples_leaf": randint(1, 9),
-              "RandomForestRegressor__criterion": ["mae", "mse"],
-              "RandomForestRegressor__max_features": randint(1, X.shape[1])}
+# Fit to the training set
+pipeline.fit(X_train, y_train)
 
-# Create the RandomizedSearchCV object: rm_cv
-#rm_cv = RandomizedSearchCV(pipeline, parameters, cv=5)
+# Evaluate model
+r2_score, rmse_score = evaluate(pipeline, X_test, y_test, 'AdaBoost')
 
-#rm_cv.fit(X_train,y_train)
-pipeline.fit(X_train,y_train)
+r2.append(r2_score)
+rmse.append(rmse_score)
+name.append('AdaBoost')
 
-#m = rm_cv.best_estimator_
-
-r2, adj_r2, mse = evaluate(pipeline, X, y, X_test, y_test, 'AdaBoost')
-print('time elapsed = %.2f sec' % (time.time() - t_start) )
-print('\n')
+#RESULTS#
+la_results = pd.DataFrame({'Model': name, 'R^2': r2, 'RMSE': rmse})
+print('-------LA-------')
+print(la_results.sort_values(by='R^2', ascending=False))
 
