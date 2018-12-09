@@ -55,27 +55,27 @@ def series_to_supervised(data,  col_names, n_in=1, n_out=1, dropnan=True):
   return agg
 
 def evaluate(model, X_test, y_test, X_train, y_train, m_name):
-  y_pred_test = model.predict(X_test)
-  y_pred_train = model.predict(X_train)
+    y_pred_test = model.predict(X_test)
+    y_pred_train = model.predict(X_train)
 
-  # Compute and print the metrics
-  r2_test = model.score(X_test, y_test)
-  rmse_test = np.sqrt(mean_squared_error(y_test, y_pred_test))
-  
-  r2_train = model.score(X_train, y_train)
-  rmse_train = np.sqrt(mean_squared_error(y_train, y_pred_train))
-  
-  print m_name
-  
-  print '---------------------'
-  print 'Train R^2: %.4f' % r2_train
-  print 'Train Root MSE: %.4f' % rmse_train
+    # Compute and print the metrics
+    r2_test = model.score(X_test, y_test)
+    rmse_test = np.sqrt(mean_squared_error(y_test, y_pred_test))
+    
+    r2_train = model.score(X_train, y_train)
+    rmse_train = np.sqrt(mean_squared_error(y_train, y_pred_train))
+    
+    print m_name
+    
+    print '---------------------'
+    print 'Train R^2: %.4f' % r2_train
+    print 'Train Root MSE: %.4f' % rmse_train
 
-  print '---------------------'
-  print 'Test R^2: %.4f' % r2_test
-  print 'Test Root MSE: %.4f' % rmse_test
+    print '---------------------'
+    print 'Test R^2: %.4f' % r2_test
+    print 'Test Root MSE: %.4f' % rmse_test
 
-  return r2_test, rmse_test
+    return r2_test, rmse_test
 
 
 WORKING_DIR = '/Users/rvg/Documents/springboard_ds/springboard_portfolio/Electricity_Demand/'
