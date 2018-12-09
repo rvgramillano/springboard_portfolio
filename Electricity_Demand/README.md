@@ -38,10 +38,10 @@
     <meta property="og:image" content="https://avatars0.githubusercontent.com/u/13947035?s=400&amp;v=4" /><meta property="og:site_name" content="GitHub" /><meta property="og:type" content="object" /><meta property="og:title" content="rvgramillano/springboard_portfolio" /><meta property="og:url" content="https://github.com/rvgramillano/springboard_portfolio" /><meta property="og:description" content="Portfolio repository for work done in Springboard&#39;s Data Science Career Track - rvgramillano/springboard_portfolio" />
 
   <link rel="assets" href="https://assets-cdn.github.com/">
-  <link rel="web-socket" href="wss://live.github.com/_sockets/VjI6MzMzNzIxMDUzOmYyMjQ2YWY1MTAzYjkxNTgxNDBlODQ4NDI0YTVhMDIxNzJlZmM0OGU0YmE0ZmNkMzQxNTA4MDQ2YjE0YjU5M2M=--ce1d924be69cca1bc6c515fb36bf3f6aa972bc01">
+  <link rel="web-socket" href="wss://live.github.com/_sockets/VjI6MzMzNzIxMDUzOmU3OGJlOTE5ZTU0OTJkYjI1NTkyODRlOTQxY2QxZWFiZTljZTFmNGQ0ZDhjYjcyNTk2MDA5ZjM1NTY3Yzk4ZDk=--8d4ac799e5e23872580e20ba0a8052aa4e6c9fa2">
   <meta name="pjax-timeout" content="1000">
   <link rel="sudo-modal" href="/sessions/sudo_modal">
-  <meta name="request-id" content="D573:7C2A:74E108:DA7288:5C0D94FF" data-pjax-transient>
+  <meta name="request-id" content="D573:7C2A:74DDD1:DA6D12:5C0D94EA" data-pjax-transient>
 
 
   
@@ -52,7 +52,7 @@
     <meta name="google-site-verification" content="ZzhVyEFwb7w3e0-uOTltm8Jsck2F5StVihD0exw2fsA">
     <meta name="google-site-verification" content="GXs5KoUUkNCoaAZn7wPN-t01Pywp9M3sEjnt_3_ZWPc">
 
-  <meta name="octolytics-host" content="collector.githubapp.com" /><meta name="octolytics-app-id" content="github" /><meta name="octolytics-event-url" content="https://collector.githubapp.com/github-external/browser_event" /><meta name="octolytics-dimension-request_id" content="D573:7C2A:74E108:DA7288:5C0D94FF" /><meta name="octolytics-dimension-region_edge" content="iad" /><meta name="octolytics-dimension-region_render" content="iad" /><meta name="octolytics-actor-id" content="13947035" /><meta name="octolytics-actor-login" content="rvgramillano" /><meta name="octolytics-actor-hash" content="7ef76638907d2f857c74af20005b16b6b4a980d97757c79f9af978014c79c7ed" />
+  <meta name="octolytics-host" content="collector.githubapp.com" /><meta name="octolytics-app-id" content="github" /><meta name="octolytics-event-url" content="https://collector.githubapp.com/github-external/browser_event" /><meta name="octolytics-dimension-request_id" content="D573:7C2A:74DDD1:DA6D12:5C0D94EA" /><meta name="octolytics-dimension-region_edge" content="iad" /><meta name="octolytics-dimension-region_render" content="iad" /><meta name="octolytics-actor-id" content="13947035" /><meta name="octolytics-actor-login" content="rvgramillano" /><meta name="octolytics-actor-hash" content="7ef76638907d2f857c74af20005b16b6b4a980d97757c79f9af978014c79c7ed" />
 <meta name="analytics-location" content="/&lt;user-name&gt;/&lt;repo-name&gt;/blob/show" data-pjax-transient="true" />
 
 
@@ -71,7 +71,7 @@
     <meta name="user-login" content="rvgramillano">
 
       <meta name="expected-hostname" content="github.com">
-    <meta name="js-proxy-site-detection-payload" content="ZGQ2ZjljMzM2ZjlhZTRiNTQ2NGMzZDI3ODg5OWEyNGUxZWY1YmUzYzI4YzJmMGU5YTVkNTZhOWRmMjFlMzZkOXx7InJlbW90ZV9hZGRyZXNzIjoiNzMuMjExLjE0MC4yNTQiLCJyZXF1ZXN0X2lkIjoiRDU3Mzo3QzJBOjc0RTEwODpEQTcyODg6NUMwRDk0RkYiLCJ0aW1lc3RhbXAiOjE1NDQzOTM5ODUsImhvc3QiOiJnaXRodWIuY29tIn0=">
+    <meta name="js-proxy-site-detection-payload" content="NjRkZGQ2MTQzYWNjN2Q0MmVhYTAxNzU4NjYxMmJmZDQ2OTZiMjc5MTYyN2UxMjQxMDEwNTliMjAzZjgzYTRjM3x7InJlbW90ZV9hZGRyZXNzIjoiNzMuMjExLjE0MC4yNTQiLCJyZXF1ZXN0X2lkIjoiRDU3Mzo3QzJBOjc0REREMTpEQTZEMTI6NUMwRDk0RUEiLCJ0aW1lc3RhbXAiOjE1NDQzOTM5NjIsImhvc3QiOiJnaXRodWIuY29tIn0=">
 
     <meta name="enabled-features" content="DASHBOARD_V2_LAYOUT_OPT_IN,EXPLORE_DISCOVER_REPOSITORIES,UNIVERSE_BANNER,MARKETPLACE_PLAN_RESTRICTION_EDITOR,NOTIFY_ON_BLOCK,TIMELINE_COMMENT_UPDATES,ISSUE_TEMPLATES_PIONEER,RELATED_ISSUES,MARKETPLACE_INSIGHTS_V2">
 
@@ -87,7 +87,7 @@
   <meta name="octolytics-dimension-user_id" content="13947035" /><meta name="octolytics-dimension-user_login" content="rvgramillano" /><meta name="octolytics-dimension-repository_id" content="150484692" /><meta name="octolytics-dimension-repository_nwo" content="rvgramillano/springboard_portfolio" /><meta name="octolytics-dimension-repository_public" content="true" /><meta name="octolytics-dimension-repository_is_fork" content="false" /><meta name="octolytics-dimension-repository_network_root_id" content="150484692" /><meta name="octolytics-dimension-repository_network_root_nwo" content="rvgramillano/springboard_portfolio" /><meta name="octolytics-dimension-repository_explore_github_marketplace_ci_cta_shown" content="true" />
 
 
-    <link rel="canonical" href="https://github.com/rvgramillano/springboard_portfolio/blob/master/README.md" data-pjax-transient>
+    <link rel="canonical" href="https://github.com/rvgramillano/springboard_portfolio/blob/master/Electricity_Demand/README.md" data-pjax-transient>
 
 
   <meta name="browser-stats-url" content="https://api.github.com/_private/browser/stats">
@@ -156,7 +156,7 @@
           aria-autocomplete="list"
           aria-controls="jump-to-results"
           aria-label="Search or jump to…"
-          data-jump-to-suggestions-path="/_graphql/GetSuggestedNavigationDestinations#csrf-token=2j68YZmF7HY47xX5k3E3wpzQNnoVKnyJhZg1UurNmvSOds6skH3/uqbPDZ+3HPeKrjBMfdFArPvEZgxG55VJNg=="
+          data-jump-to-suggestions-path="/_graphql/GetSuggestedNavigationDestinations#csrf-token=xbVw2hkOu0rl5E4d7oie++tGQNI6d4KYsfBoIkcQbAeR/QIXEPaohnvEVnvK5V6z2aY61f4dUurwDlE2Ski/xQ=="
           spellcheck="false"
           autocomplete="off"
           >
@@ -383,7 +383,7 @@
           <li><a role="menuitem" class="dropdown-item" href="https://help.github.com" data-ga-click="Header, go to help, text:help">Help</a></li>
           <li><a role="menuitem" class="dropdown-item" href="/settings/profile" data-ga-click="Header, go to settings, icon:settings">Settings</a></li>
           <li>
-            <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="logout-form" action="/logout" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="Z1WF/73/IUX9qm281X91IemnrB/yyy7taYaT/s5bTpUP3x2oeqNAd0O5vKxGSSrsIlD28M6bAEAKl54r+m+QaQ==" />
+            <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="logout-form" action="/logout" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="DK/JtQBZaaQu6eLqYiLLvA9W0QwWxJNoFbZ2nnhv/klkJVHixwUIlpD6M/rxFJRxxKGL4yqUvcV2p3tLTFsgtQ==" />
               <button type="submit" class="dropdown-item dropdown-signout" data-ga-click="Header, sign out, icon:logout" role="menuitem">
                 Sign out
               </button>
@@ -396,7 +396,7 @@
 
 
 
-        <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="sr-only right-0" action="/logout" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="JpJ99yu2vvgmP6fsKBQ1OCQyo7TPystqqn3IW1L3WH9OGOWg7Orfypgsdvy7Imr178X5W/Oa5cfJbMWOZsOGgw==" />
+        <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="sr-only right-0" action="/logout" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="hRUDic7s81nM+W8b+j97UGeYjfR1DkuB2oq8m6lSCrztn5veCbCSa3LqvgtpCSSdrG/XG0leZSy5m7FOnWbUQA==" />
           <button type="submit" class="dropdown-item dropdown-signout" data-ga-click="Header, sign out, icon:logout">
             Sign out
           </button>
@@ -433,7 +433,7 @@
 
       <ul class="pagehead-actions">
   <li>
-        <!-- '"` --><!-- </textarea></xmp> --></option></form><form data-remote="true" class="js-social-form js-social-container" action="/notifications/subscribe" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="Rr4IZz+qhQhWAeAacih6CYmHZ8dk4V8oGVeLiaAXCkWvYNfkzprnSKW9Tvc9h3DUNWSQqph8EP990NWwNyCNWQ==" />      <input type="hidden" name="repository_id" id="repository_id" value="150484692" class="form-control" />
+        <!-- '"` --><!-- </textarea></xmp> --></option></form><form data-remote="true" class="js-social-form js-social-container" action="/notifications/subscribe" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="QmCN+oH4V/dISWocxgS5Fsh6UJNY+tvYmMsGQYZk/MqrvlJ5cMg1t7v1xPGJq7PLdJmn/qRnlA/8TFh4EVN71g==" />      <input type="hidden" name="repository_id" id="repository_id" value="150484692" class="form-control" />
 
       <details class="details-reset details-overlay select-menu float-left">
         <summary class="btn btn-sm btn-with-count select-menu-button" data-ga-click="Repository, click Watch settings, action:blob#show">
@@ -508,7 +508,7 @@
   <li>
     
   <div class="js-toggler-container js-social-container starring-container ">
-    <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="starred js-social-form" action="/rvgramillano/springboard_portfolio/unstar" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="VhqcmIBewHwEBSUJbgh/8JN+Xw7/FQ/RBShLAs47dluNWj4x+X0Z6NxVU1Dw05MBZzrTjGj0INUF+F5YsyIUoQ==" />
+    <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="starred js-social-form" action="/rvgramillano/springboard_portfolio/unstar" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="B3+jEabTduXPp/a4H+icuXsLLHGLt1CXJC8mSDKedWrcPwG43/CvcRf3gOGBM3BIj0+g8xxWf5Mk/zMST4cXkA==" />
       <input type="hidden" name="context" value="repository"></input>
       <button
         type="submit"
@@ -523,7 +523,7 @@
           1
         </a>
 </form>
-    <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="unstarred js-social-form" action="/rvgramillano/springboard_portfolio/star" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="Roh7Ynv+lsp9vnGLZuWH/ixf2/A1zN4uxTkobZEpqklRVFkWDPWT0JUvXPqKykQpWxT6JIt3jiBPcLDOVjzo3Q==" />
+    <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="unstarred js-social-form" action="/rvgramillano/springboard_portfolio/star" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="chdMWeucGVASDrDJJ0T2rwpKTxK/jfxU5H9kopxDoK5ly24tnJccSvqfnbjLazV4fQFuxgE2rFpuNvwBW1biOg==" />
       <input type="hidden" name="context" value="repository"></input>
       <button
         type="submit"
@@ -623,9 +623,9 @@
     
 
   
-    <a class="d-none js-permalink-shortcut" data-hotkey="y" href="/rvgramillano/springboard_portfolio/blob/8a4d07714f993ea5c9605b097252c07fd3dddf0e/README.md">Permalink</a>
+    <a class="d-none js-permalink-shortcut" data-hotkey="y" href="/rvgramillano/springboard_portfolio/blob/8a4d07714f993ea5c9605b097252c07fd3dddf0e/Electricity_Demand/README.md">Permalink</a>
 
-    <!-- blob contrib key: blob_contributors:v21:edcc3fb82c64531a2417c418df503a1e -->
+    <!-- blob contrib key: blob_contributors:v21:7717e2883c4d7b526e5fbe3fd2992161 -->
 
     
 
@@ -669,7 +669,7 @@
 
 
             <a class="select-menu-item js-navigation-item js-navigation-open selected"
-               href="/rvgramillano/springboard_portfolio/blob/master/README.md"
+               href="/rvgramillano/springboard_portfolio/blob/master/Electricity_Demand/README.md"
                data-name="master"
                data-skip-pjax="true"
                rel="nofollow">
@@ -680,10 +680,10 @@
             </a>
         </div>
 
-          <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="select-menu-new-item-form js-new-item-form" action="/rvgramillano/springboard_portfolio/branches" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="h5Qz3pYNU9PNhs+gKXlnon3TVg/2623qfwkQIEMrhKitoj0gZK7MSjSu6k0zA/LOpJbxt5NjFT8FqJKuDGcffQ==" />
+          <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="select-menu-new-item-form js-new-item-form" action="/rvgramillano/springboard_portfolio/branches" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="vHIcljDzwZMXRHn4/nkkrV5fXFmgeviSF8pn4fEUBTiWRBJowlBeCu5sXBXkA7HBhxr74cXygEdta+Vvvlie7Q==" />
             <input type="hidden" name="name" id="name" class="js-new-item-value">
             <input type="hidden" name="branch" id="branch" value="master">
-            <input type="hidden" name="path_binary" id="path_binary" value="UkVBRE1FLm1k">
+            <input type="hidden" name="path_binary" id="path_binary" value="RWxlY3RyaWNpdHlfRGVtYW5kL1JFQURNRS5tZA==">
 
             <button type="submit" class="width-full select-menu-item js-navigation-open js-navigation-item">
               <svg class="octicon octicon-git-branch select-menu-item-icon" viewBox="0 0 10 16" version="1.1" width="10" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M10 5c0-1.11-.89-2-2-2a1.993 1.993 0 0 0-1 3.72v.3c-.02.52-.23.98-.63 1.38-.4.4-.86.61-1.38.63-.83.02-1.48.16-2 .45V4.72a1.993 1.993 0 0 0-1-3.72C.88 1 0 1.89 0 3a2 2 0 0 0 1 1.72v6.56c-.59.35-1 .99-1 1.72 0 1.11.89 2 2 2 1.11 0 2-.89 2-2 0-.53-.2-1-.53-1.36.09-.06.48-.41.59-.47.25-.11.56-.17.94-.17 1.05-.05 1.95-.45 2.75-1.25S8.95 7.77 9 6.73h-.02C9.59 6.37 10 5.73 10 5zM2 1.8c.66 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2C1.35 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2zm0 12.41c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm6-8c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"/></svg>
@@ -720,54 +720,21 @@
         </clipboard-copy>
       </div>
       <div id="blob-path" class="breadcrumb">
-        <span class="repo-root js-repo-root"><span class="js-path-segment"><a data-pjax="true" href="/rvgramillano/springboard_portfolio"><span>springboard_portfolio</span></a></span></span><span class="separator">/</span><strong class="final-path">README.md</strong>
+        <span class="repo-root js-repo-root"><span class="js-path-segment"><a data-pjax="true" href="/rvgramillano/springboard_portfolio"><span>springboard_portfolio</span></a></span></span><span class="separator">/</span><span class="js-path-segment"><a data-pjax="true" href="/rvgramillano/springboard_portfolio/tree/master/Electricity_Demand"><span>Electricity_Demand</span></a></span><span class="separator">/</span><strong class="final-path">README.md</strong>
       </div>
     </div>
 
 
-    
-  <div class="commit-tease">
-      <span class="float-right">
-        <a class="commit-tease-sha" href="/rvgramillano/springboard_portfolio/commit/bd8297f53bc8d2573c94c25866313d85fc5da2fa" data-pjax>
-          bd8297f
-        </a>
-        <relative-time datetime="2018-12-09T22:14:59Z">Dec 9, 2018</relative-time>
-      </span>
+    <include-fragment src="/rvgramillano/springboard_portfolio/contributors/master/Electricity_Demand/README.md" class="commit-tease commit-loader">
       <div>
-        <a rel="author" data-skip-pjax="true" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=13947035" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="/rvgramillano"><img class="avatar" src="https://avatars1.githubusercontent.com/u/13947035?s=40&amp;v=4" width="20" height="20" alt="@rvgramillano" /></a>
-        <a class="user-mention" rel="author" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=13947035" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="/rvgramillano">rvgramillano</a>
-          <a data-pjax="true" title="Update README.md" class="message" href="/rvgramillano/springboard_portfolio/commit/bd8297f53bc8d2573c94c25866313d85fc5da2fa">Update README.md</a>
+        Fetching contributors&hellip;
       </div>
 
-    <div class="commit-tease-contributors">
-      
-<details class="details-reset details-overlay details-overlay-dark lh-default text-gray-dark float-left mr-2" id="blob_contributors_box">
-  <summary class="btn-link" aria-haspopup="dialog"  >
-    
-    <span><strong>1</strong> contributor</span>
-  </summary>
-  <details-dialog class="Box Box--overlay d-flex flex-column anim-fade-in fast " aria-label="Users who have contributed to this file">
-    <div class="Box-header">
-      <button class="Box-btn-octicon btn-octicon float-right" type="button" aria-label="Close dialog" data-close-dialog>
-        <svg class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"/></svg>
-      </button>
-      <h3 class="Box-title">Users who have contributed to this file</h3>
-    </div>
-    
-        <ul class="list-style-none overflow-auto">
-            <li class="Box-row">
-              <a class="link-gray-dark no-underline" href="/rvgramillano">
-                <img class="avatar mr-2" alt="" src="https://avatars1.githubusercontent.com/u/13947035?s=40&amp;v=4" width="20" height="20" />
-                rvgramillano
-</a>            </li>
-        </ul>
-
-  </details-dialog>
-</details>
-      
-    </div>
-  </div>
-
+      <div class="commit-tease-contributors">
+          <img alt="" class="loader-loading float-left" src="https://assets-cdn.github.com/images/spinners/octocat-spinner-32-EAF2F5.gif" width="16" height="16" />
+        <span class="loader-error">Cannot retrieve contributors at this time</span>
+      </div>
+</include-fragment>
 
 
     <div class="file ">
@@ -776,25 +743,25 @@
 
 
     <div class="BtnGroup">
-      <a id="raw-url" class="btn btn-sm BtnGroup-item" href="/rvgramillano/springboard_portfolio/raw/master/README.md">Raw</a>
-        <a class="btn btn-sm js-update-url-with-hash BtnGroup-item" data-hotkey="b" href="/rvgramillano/springboard_portfolio/blame/master/README.md">Blame</a>
-      <a rel="nofollow" class="btn btn-sm BtnGroup-item" href="/rvgramillano/springboard_portfolio/commits/master/README.md">History</a>
+      <a id="raw-url" class="btn btn-sm BtnGroup-item" href="/rvgramillano/springboard_portfolio/raw/master/Electricity_Demand/README.md">Raw</a>
+        <a class="btn btn-sm js-update-url-with-hash BtnGroup-item" data-hotkey="b" href="/rvgramillano/springboard_portfolio/blame/master/Electricity_Demand/README.md">Blame</a>
+      <a rel="nofollow" class="btn btn-sm BtnGroup-item" href="/rvgramillano/springboard_portfolio/commits/master/Electricity_Demand/README.md">History</a>
     </div>
 
         <a class="btn-octicon tooltipped tooltipped-nw"
-           href="x-github-client://openRepo/https://github.com/rvgramillano/springboard_portfolio?branch=master&amp;filepath=README.md"
+           href="x-github-client://openRepo/https://github.com/rvgramillano/springboard_portfolio?branch=master&amp;filepath=Electricity_Demand%2FREADME.md"
            aria-label="Open this file in GitHub Desktop"
            data-ga-click="Repository, open with desktop, type:mac">
             <svg class="octicon octicon-device-desktop" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M15 2H1c-.55 0-1 .45-1 1v9c0 .55.45 1 1 1h5.34c-.25.61-.86 1.39-2.34 2h8c-1.48-.61-2.09-1.39-2.34-2H15c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm0 9H1V3h14v8z"/></svg>
         </a>
 
-          <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="inline-form js-update-url-with-hash" action="/rvgramillano/springboard_portfolio/edit/master/README.md" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="x/4tU1c0E9m7KPDMHTzAgiwRRG0gSPlcSUCr0Lrz0erEl9xR7DMm8XKvWaGiBzbqMveXHsynDNj09/A6aHXrSA==" />
+          <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="inline-form js-update-url-with-hash" action="/rvgramillano/springboard_portfolio/edit/master/Electricity_Demand/README.md" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="cmMYkDRq2zYZ8zo0DUgEof7nyPSTZMhJstPXlfhKTqDknyxi3shmOHrDdefX2ADXed05ifkyNPGVsW5C6laNnw==" />
             <button class="btn-octicon tooltipped tooltipped-nw" type="submit"
               aria-label="Edit this file" data-hotkey="e" data-disable-with>
               <svg class="octicon octicon-pencil" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M0 12v3h3l8-8-3-3-8 8zm3 2H1v-2h1v1h1v1zm10.3-9.3L12 6 9 3l1.3-1.3a.996.996 0 0 1 1.41 0l1.59 1.59c.39.39.39 1.02 0 1.41z"/></svg>
             </button>
 </form>
-        <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="inline-form" action="/rvgramillano/springboard_portfolio/delete/master/README.md" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="zGR+YWX3DftwnyauQydxpFexPeWw2AXto0HA4dCfK25mPQqVnr1RaO4GcZ2glExrVTC/hUF2cULKZLg7fGqHaw==" />
+        <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="inline-form" action="/rvgramillano/springboard_portfolio/delete/master/Electricity_Demand/README.md" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="rliDjIG9BWjqIV3TNZkPFBGEvFCGM55yIo0GGgEZDYpcJkH7imNuOnTQCy0YTHWo/MLfnJ2Kg5GOB0f/9hY26A==" />
           <button class="btn-octicon btn-octicon-danger tooltipped tooltipped-nw" type="submit"
             aria-label="Delete this file" data-disable-with>
             <svg class="octicon octicon-trashcan" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11 2H9c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1H2c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1v9c0 .55.45 1 1 1h7c.55 0 1-.45 1-1V5c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm-1 12H3V5h1v8h1V5h1v8h1V5h1v8h1V5h1v9zm1-10H2V3h9v1z"/></svg>
@@ -804,14 +771,14 @@
   <div class="file-info">
       3 lines (2 sloc)
       <span class="file-info-divider"></span>
-    364 Bytes
+    176 Bytes
   </div>
 </div>
 
       
   <div id="readme" class="readme blob instapaper_body">
-    <article class="markdown-body entry-content" itemprop="text"><h1><a id="user-content-springboard-portfolio" class="anchor" aria-hidden="true" href="#springboard-portfolio"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Springboard Portfolio</h1>
-<p>Portfolio repository for work done in Springboard's Data Science Career Track. You can find information on my latest project predicting electricity demand in the Electricity_Demand folder. The mini_projects folder contains ipython notebooks and code for different mini project I completed thourghout the course. Please take a look at both!</p>
+    <article class="markdown-body entry-content" itemprop="text"><h1><a id="user-content-electricity-demand" class="anchor" aria-hidden="true" href="#electricity-demand"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Electricity Demand</h1>
+<p>In this project, we aim to predict electricity demand using weather data. All the code, my final report and presentation can be found in the final folder.</p>
 </article>
   </div>
 
@@ -843,7 +810,7 @@
 <div class="footer container-lg px-3" role="contentinfo">
   <div class="position-relative d-flex flex-justify-between pt-6 pb-2 mt-6 f6 text-gray border-top border-gray-light ">
     <ul class="list-style-none d-flex flex-wrap ">
-      <li class="mr-3">&copy; 2018 <span title="0.35662s from unicorn-86f749cb64-dsgcb">GitHub</span>, Inc.</li>
+      <li class="mr-3">&copy; 2018 <span title="0.23479s from unicorn-86f749cb64-7pndp">GitHub</span>, Inc.</li>
         <li class="mr-3"><a data-ga-click="Footer, go to terms, text:terms" href="https://github.com/site/terms">Terms</a></li>
         <li class="mr-3"><a data-ga-click="Footer, go to privacy, text:privacy" href="https://github.com/site/privacy">Privacy</a></li>
         <li class="mr-3"><a href="/security" data-ga-click="Footer, go to security, text:security">Security</a></li>
