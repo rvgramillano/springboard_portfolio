@@ -47,7 +47,7 @@ def series_to_supervised(data,  col_names, n_in=1, n_out=1, dropnan=True):
 
 WORKING_DIR = '/Users/rvg/Documents/springboard_ds/springboard_portfolio/Electricity_Demand/'
 
-la_df = pd.read_pickle(WORKING_DIR + 'data/LA_df.pkl')
+la_df = pd.read_pickle(WORKING_DIR + 'data/LA_df_final.pkl')
 
 dataset = la_df.copy()
 
@@ -67,7 +67,7 @@ scaled = scaler.fit_transform(values)
 # frame as supervised learning
 reframed = series_to_supervised(scaled, dataset.columns, 1, 1)
 # drop columns we don't want to predict
-reframed.drop(reframed.columns[[18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33]], axis=1, inplace=True)
+reframed.drop(reframed.columns[[15,16,17,18,19,20,21,22,23,24,25,26,27]], axis=1, inplace=True)
 
 '''The first step is to prepare the pollution dataset for the LSTM.
 
