@@ -55,32 +55,32 @@ def series_to_supervised(data,  col_names, n_in=1, n_out=1, dropnan=True):
   return agg
 
 def evaluate(model, X_test, y_test, X_train, y_train, m_name):
-    y_pred_test = model.predict(X_test)
-    y_pred_train = model.predict(X_train)
+  y_pred_test = model.predict(X_test)
+  y_pred_train = model.predict(X_train)
 
-    # Compute and print the metrics
-    r2_test = model.score(X_test, y_test)
-    rmse_test = np.sqrt(mean_squared_error(y_test, y_pred_test))
-    
-    r2_train = model.score(X_train, y_train)
-    rmse_train = np.sqrt(mean_squared_error(y_train, y_pred_train))
-    
-    print m_name
-    
-    print '---------------------'
-    print 'Train R^2: %.4f' % r2_train
-    print 'Train Root MSE: %.4f' % rmse_train
+  # Compute and print the metrics
+  r2_test = model.score(X_test, y_test)
+  rmse_test = np.sqrt(mean_squared_error(y_test, y_pred_test))
+  
+  r2_train = model.score(X_train, y_train)
+  rmse_train = np.sqrt(mean_squared_error(y_train, y_pred_train))
+  
+  print m_name
+  
+  print '---------------------'
+  print 'Train R^2: %.4f' % r2_train
+  print 'Train Root MSE: %.4f' % rmse_train
 
-    print '---------------------'
-    print 'Test R^2: %.4f' % r2_test
-    print 'Test Root MSE: %.4f' % rmse_test
+  print '---------------------'
+  print 'Test R^2: %.4f' % r2_test
+  print 'Test Root MSE: %.4f' % rmse_test
 
-    return r2_test, rmse_test
+  return r2_test, rmse_test
 
 
 WORKING_DIR = '/Users/rvg/Documents/springboard_ds/springboard_portfolio/Electricity_Demand/'
 
-df = pd.read_pickle(WORKING_DIR + 'data/LA_df.pkl')
+df = pd.read_pickle(WORKING_DIR + 'data/LA_df_final.pkl')
 
 #set the column we want to predict (demand) to the first columns for consistency
 cols = list(df.columns)
@@ -94,7 +94,7 @@ values = values.astype('float32')
 # frame as supervised learning
 reframed = series_to_supervised(values, df.columns, 1, 1)
 # drop columns we don't want to predict
-reframed.drop(reframed.columns[[18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33]], axis=1, inplace=True)
+reframed.drop(reframed.columns[[15,16,17,18,19,20,21,22,23,24,25,26,27]], axis=1, inplace=True)
 
 values = reframed.values
 n_train_hours = 365 * 24
@@ -106,7 +106,7 @@ X_test, y_test = test[:, :-1], test[:, -1]
 
 
 r2 = []
-rmse = []
+rmses = []
 name = []
 
 
@@ -120,15 +120,11 @@ pipeline = Pipeline(steps)
 # Fit to the training set
 pipeline.fit(X_train, y_train)
 
-scores = cross_val_score(pipeline.steps[1][1], X_test, y_test, cv=5, scoring='r2')
-rmse = np.sqrt(-1*cross_val_score(pipeline.steps[1][1], X_test, y_test, cv=5, scoring='neg_mean_squared_error'))
-
-
 # Evaluate model
-r2_score, rmse_score = evaluate(pipeline, X_test, y_test, 'Linear Regression')
+r2_score, rmse_score = evaluate(pipeline, X_test, y_test, X_train, y_train, 'Linear Regression')
 
 r2.append(r2_score)
-rmse.append(rmse_score)
+rmses.append(rmse_score)
 name.append('Linear Regression')
 
 
@@ -143,10 +139,10 @@ pipeline = Pipeline(steps)
 pipeline.fit(X_train, y_train)
 
 # Evaluate model
-r2_score, rmse_score = evaluate(pipeline, X_test, y_test, 'Decision Tree')
+r2_score, rmse_score = evaluate(pipeline, X_test, y_test, X_train, y_train, 'Decision Tree')
 
 r2.append(r2_score)
-rmse.append(rmse_score)
+rmses.append(rmse_score)
 name.append('Decision Tree')
 
 
@@ -161,10 +157,10 @@ pipeline = Pipeline(steps)
 pipeline.fit(X_train, y_train)
 
 # Evaluate model
-r2_score, rmse_score = evaluate(pipeline, X_test, y_test, 'k-NN')
+r2_score, rmse_score = evaluate(pipeline, X_test, y_test, X_train, y_train, 'k-NN')
 
 r2.append(r2_score)
-rmse.append(rmse_score)
+rmses.append(rmse_score)
 name.append('k-NN')
 
 
@@ -179,10 +175,10 @@ pipeline = Pipeline(steps)
 pipeline.fit(X_train, y_train)
 
 # Evaluate model
-r2_score, rmse_score = evaluate(pipeline, X_test, y_test, 'Random Forest')
+r2_score, rmse_score = evaluate(pipeline, X_test, y_test, X_train, y_train, 'Random Forest')
 
 r2.append(r2_score)
-rmse.append(rmse_score)
+rmses.append(rmse_score)
 name.append('Random Forest')
 
 
@@ -197,11 +193,21 @@ pipeline = Pipeline(steps)
 pipeline.fit(X_train, y_train)
 
 # Evaluate model
-r2_score, rmse_score = evaluate(pipeline, X_test, y_test, 'Gradient Boosting')
+r2_score, rmse_score = evaluate(pipeline, X_test, y_test, X_train, y_train, 'Gradient Boosting')
 
 r2.append(r2_score)
-rmse.append(rmse_score)
+rmses.append(rmse_score)
 name.append('Gradient Boosting')
+
+m = pipeline.steps[1][1]
+predictors = [x[:-5] for x in reframed.columns[:-1]]
+feat_imp = pd.Series(m.feature_importances_, predictors).sort_values(ascending=False)
+fig,ax=plt.subplots()
+feat_imp.plot(kind='bar', ax=ax)
+ax.set_xlabel('Feature')
+ax.set_ylabel('Feature importance')
+plt.tight_layout()
+plt.savefig(WORKING_DIR + 'plots/modeling/features.png', dpi=300)
 
 
 ### BAGGING REGRESSION ###
@@ -215,10 +221,10 @@ pipeline = Pipeline(steps)
 pipeline.fit(X_train, y_train)
 
 # Evaluate model
-r2_score, rmse_score = evaluate(pipeline, X_test, y_test, 'Bagging')
+r2_score, rmse_score = evaluate(pipeline, X_test, y_test, X_train, y_train, 'Bagging')
 
 r2.append(r2_score)
-rmse.append(rmse_score)
+rmses.append(rmse_score)
 name.append('Bagging')
 
 
@@ -234,14 +240,14 @@ pipeline = Pipeline(steps)
 pipeline.fit(X_train, y_train)
 
 # Evaluate model
-r2_score, rmse_score = evaluate(pipeline, X_test, y_test, 'AdaBoost')
+r2_score, rmse_score = evaluate(pipeline, X_test, y_test, X_train, y_train, 'AdaBoost')
 
 r2.append(r2_score)
-rmse.append(rmse_score)
+rmses.append(rmse_score)
 name.append('AdaBoost')
 
 #RESULTS#
-la_results = pd.DataFrame({'Model': name, 'R^2': r2, 'RMSE': rmse})
+la_results = pd.DataFrame({'Model': name, 'R^2': r2, 'RMSE': rmses})
 print('-------LA-------')
 print(la_results.sort_values(by='R^2', ascending=False))
 
