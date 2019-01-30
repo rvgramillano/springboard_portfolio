@@ -2,7 +2,6 @@ import PIL.ImageOps
 from PIL import Image
 from sklearn import preprocessing
 import numpy as np
-#from libs import *
 import tensorflow as tf
 import itertools
 import matplotlib.pyplot as plt
@@ -55,32 +54,70 @@ def new_conv_layer(input,              # The previous layer.
     # because we will plot the weights later.
     return layer, weights
 
-tf.logging.set_verbosity(tf.logging.INFO)
+def plot_confusion_matrix(cm, classes, mode,normalize=False,title='Confusion matrix',cmap=plt.cm.Blues):
+    """
+    This function prints and plots the confusion matrix.
+    Normalization can be applied by setting `normalize=True`.
+    """
+    if normalize:
+        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+        print("Normalized confusion matrix")
+    else:
+        print('Confusion matrix, without normalization')
 
-dim = 28
-train_num = 56000 #80% of 70000
-test_num = 14000
+    print(cm)
 
-data = np.load("/Users/rvg/Documents/springboard_ds/CNN_eyeglasses/data/CelebA/CelebA_70K.npz")
-labels = data['labels']
-celebData = data['imageData']
-imageNames = data['imageNames']
+    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+    plt.title(title)
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
 
-trains_images = celebData[0:train_num,:,:]#getting the training sets
-train_images_labels = labels[0:train_num,:]
+    fmt = '.2f' if normalize else 'd'
+    thresh = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, format(cm[i, j], fmt),
+                 horizontalalignment="center",
+                 color="white" if cm[i, j] > thresh else "black")
 
-test_images = celebData[train_num:train_num+test_num,:,:]#getting the training sets
-test_images_labels = labels[train_num:train_num+test_num,:]
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.tight_layout()
+    plt.savefig('/Users/rvg/Documents/springboard_ds/springboard_portfolio/CNN_eyeglasses/modeling/plots/%s_cf_aligned.png'%mode, dpi=350)
+    plt.clf()
 
-#flattening the input array and reshaping the labels as per requirement of the tnesorflow algo
-trains_images = trains_images.reshape([train_num,dim**2])
-test_images = test_images.reshape([test_num,dim**2])
-train_images_labels = train_images_labels.reshape([train_num,])
-test_images_labels = test_images_labels.reshape([test_num,])
+def get_confusion_matrix(labels, predictions, mode):
+	final_preds = []
+	for pred in predictions:
+		final_preds.append(pred['classes'])
+	confusion_matrix = tf.confusion_matrix(list(labels), final_preds)
+	with tf.Session() as sess:
+		cm = sess.run(confusion_matrix)
+		print cm.shape
+	plot_confusion_matrix(np.array(cm), ['Eyeglasses', 'No Eyeglasses'], mode, title='%s Set Confusion Matrix'%mode)
+	return final_preds
 
-#standardizing the image data set with zero mean and unit standard deviation
-trains_images = preprocessing.scale(trains_images)
-test_images = preprocessing.scale(test_images)
+def get_roc_curve(labels, predictions, mode, color):
+	final_pred_probs = []
+	for pred in predictions:
+		final_pred_probs.append(pred['probabilities'][1])
+	fpr, tpr, thresholds = roc_curve(labels, final_pred_probs)
+	roc_auc = auc(fpr, tpr)
+	plt.plot(fpr, tpr, color=color, label = '%s AUC = %0.2f' % (mode, roc_auc), lw=2.5)
+	if mode=='Training':
+		plt.title('Receiver Operating Characteristics')
+		plt.plot([0, 1], [0, 1],'k--')
+		plt.xlim([0, 1])
+		plt.ylim([0, 1])
+		plt.ylabel('True Positive Rate')
+		plt.xlabel('False Positive Rate')
+	if mode == 'Testing':
+		plt.legend(loc= 'lower right')
+		plt.tight_layout()
+		plt.savefig('/Users/rvg/Documents/springboard_ds/springboard_portfolio/CNN_eyeglasses/modeling/plots/ROC_aligned.png', dpi=350)
+		plt.clf()
+	return None
 
 def cnn_model(features, labels, mode):
 
@@ -173,7 +210,34 @@ def cnn_model(features, labels, mode):
 	        labels=labels, predictions=predictions["classes"])}
 	return tf.estimator.EstimatorSpec(mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
+tf.logging.set_verbosity(tf.logging.INFO)
 
+dim = 28
+train_num = 61531 #80% of 76914
+test_num = 15383
+
+data = np.load("/Users/rvg/Documents/springboard_ds/springboard_portfolio/CNN_eyeglasses/data/CelebA/CelebA_70K_align.npz")
+labels = data['labels']
+celebData = data['imageData']
+imageNames = data['imageNames']
+
+trains_images = celebData[0:train_num,:,:]#getting the training sets
+train_images_labels = labels[0:train_num,:]
+
+test_images = celebData[train_num:train_num+test_num,:,:]#getting the training sets
+test_images_labels = labels[train_num:train_num+test_num,:]
+
+#flattening the input array and reshaping the labels as per requirement of the tnesorflow algo
+trains_images = trains_images.reshape([train_num,dim**2])
+test_images = test_images.reshape([test_num,dim**2])
+train_images_labels = train_images_labels.reshape([train_num,])
+test_images_labels = test_images_labels.reshape([test_num,])
+
+#standardizing the image data set with zero mean and unit standard deviation
+trains_images = preprocessing.scale(trains_images)
+test_images = preprocessing.scale(test_images)
+
+# set hyperparameters
 global dropOut
 global layer1Nodes
 global layer2Nodes
@@ -181,7 +245,7 @@ dropOut = 0.4
 layer1Nodes = 32
 layer2Nodes = 64
 #saving the trained model on this path
-modelName = "/Users/rvg/Documents/springboard_ds/springboard_portfolio/CNN_eyeglasses/modeling/celeb_convnet_model"+str(dropOut)+str(layer1Nodes)+str(layer2Nodes)
+modelName = "/Users/rvg/Documents/springboard_ds/springboard_portfolio/CNN_eyeglasses/modeling/celeb_convnet_model_aligned"+str(dropOut)+str(layer1Nodes)+str(layer2Nodes)
 # Load training and eval data
 train_data = np.asarray(trains_images, dtype=np.float32)  # Returns np.array
 train_labels = train_images_labels
@@ -217,79 +281,13 @@ Train_input_fn = tf.estimator.inputs.numpy_input_fn(
   shuffle=False)
 
 train_results = celeb_classifier.evaluate(input_fn=Train_input_fn)
-
 print("Training set accuracy", train_results)
-
-def plot_confusion_matrix(cm, classes, mode,normalize=False,title='Confusion matrix',cmap=plt.cm.Blues):
-    """
-    This function prints and plots the confusion matrix.
-    Normalization can be applied by setting `normalize=True`.
-    """
-    if normalize:
-        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-        print("Normalized confusion matrix")
-    else:
-        print('Confusion matrix, without normalization')
-
-    print(cm)
-
-    plt.imshow(cm, interpolation='nearest', cmap=cmap)
-    plt.title(title)
-    plt.colorbar()
-    tick_marks = np.arange(len(classes))
-    plt.xticks(tick_marks, classes, rotation=45)
-    plt.yticks(tick_marks, classes)
-
-    fmt = '.2f' if normalize else 'd'
-    thresh = cm.max() / 2.
-    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-        plt.text(j, i, format(cm[i, j], fmt),
-                 horizontalalignment="center",
-                 color="white" if cm[i, j] > thresh else "black")
-
-    plt.ylabel('True label')
-    plt.xlabel('Predicted label')
-    plt.tight_layout()
-    plt.savefig('/Users/rvg/Documents/springboard_ds/springboard_portfolio/CNN_eyeglasses/modeling/plots/%s_cf.png'%mode, dpi=350)
-    plt.clf()
-
-def get_confusion_matrix(labels, predictions, mode):
-	final_preds = []
-	for pred in predictions:
-		final_preds.append(pred['classes'])
-	confusion_matrix = tf.confusion_matrix(list(labels), final_preds)
-	with tf.Session() as sess:
-		cm = sess.run(confusion_matrix)
-		print cm.shape
-	plot_confusion_matrix(np.array(cm), ['Eyeglasses', 'No Eyeglasses'], mode, title='%s Set Confusion Matrix'%mode)
-	return final_preds
-
-def get_roc_curve(labels, predictions, mode, color):
-	final_pred_probs = []
-	for pred in predictions:
-		final_pred_probs.append(pred['probabilities'][1])
-	fpr, tpr, thresholds = roc_curve(labels, final_pred_probs)
-	roc_auc = auc(fpr, tpr)
-	plt.plot(fpr, tpr, color=color, label = '%s AUC = %0.2f' % (mode, roc_auc), lw=2.5)
-	if mode=='Training':
-		plt.title('Receiver Operating Characteristics')
-		plt.plot([0, 1], [0, 1],'k--')
-		plt.xlim([0, 1])
-		plt.ylim([0, 1])
-		plt.ylabel('True Positive Rate')
-		plt.xlabel('False Positive Rate')
-	if mode == 'Testing':
-		plt.legend(loc= 'lower right')
-		plt.savefig('/Users/rvg/Documents/springboard_ds/springboard_portfolio/CNN_eyeglasses/modeling/plots/springboard_portfolio/ROC.png', dpi=350)
-	return None
-
 train_predictions = list(celeb_classifier.predict(input_fn=Train_input_fn))
 train_labels = list(train_labels)
 train_preds = get_confusion_matrix(train_labels, train_predictions, 'Training') 
 cr_train = classification_report(train_labels, train_preds)
 print '-----------------------TRAINING SET-----------------------'
 print cr_train
-get_roc_curve(train_labels, train_predictions, 'Training', 'royalblue')
 
 # Evaluate the Test set and print results
 test_input_fn = tf.estimator.inputs.numpy_input_fn(
@@ -305,16 +303,11 @@ test_preds = get_confusion_matrix(test_labels, test_predictions, 'Testing')
 cr_test = classification_report(test_labels, test_preds)
 print '-----------------------TESTING SET-----------------------'
 print cr_test
+
+# get ROC curves for both training and testing set
+get_roc_curve(train_labels, train_predictions, 'Training', 'royalblue')
 get_roc_curve(test_labels, test_predictions, 'Testing', 'firebrick')
 
-# Evaluate on twitter images
-twitter_input_fun = tf.estimator.inputs.numpy_input_fn(
-  x={"x": twitter_data},
-  y=twitter_labels,
-  num_epochs=1,
-  shuffle=False)
-twitter_results = celeb_classifier.evaluate(input_fn=twitter_input_fn)
-print("Twitter accuracy" ,twitter_results)
 
 
 
