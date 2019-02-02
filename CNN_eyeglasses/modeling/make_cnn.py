@@ -94,7 +94,8 @@ def get_confusion_matrix(labels, predictions, mode):
 	confusion_matrix = tf.confusion_matrix(list(labels), final_preds)
 	with tf.Session() as sess:
 		cm = sess.run(confusion_matrix)
-		print cm.shape
+	# switching order of confusion matrix such that the '1' class (eyeglasses) is on the first row
+	cm = np.array([[cm[1][1], cm[1][0]], [cm[0][1], cm[0][0]]])
 	plot_confusion_matrix(np.array(cm), ['Eyeglasses', 'No Eyeglasses'], mode, title='%s Set Confusion Matrix'%mode)
 	return final_preds
 
