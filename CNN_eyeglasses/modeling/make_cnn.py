@@ -135,7 +135,6 @@ def cnn_model(features, labels, mode):
 	# Padding is added to preserve width and height.
 	# Input Tensor Shape: [batch_size, 28, 28, 1]
 	# Output Tensor Shape: [batch_size, 28, 28, 32]
-	#conv1 = new_conv_layer(input_layer, layer1Nodes, [5,5], tf.nn.relu)
 	conv1, weights_conv1 = new_conv_layer(input=input_layer,num_input_channels=1,filter_size=5,num_filters=layer1Nodes)
 	print conv1.shape
 	

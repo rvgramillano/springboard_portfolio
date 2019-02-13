@@ -12,7 +12,7 @@ n_images = len(os.listdir(DIR + 'profile_pics/aligned/'))
 # set up structure for storing image data
 imageData = np.zeros((n_images,dim,dim), dtype=np.uint8)
 # manually input
-all_labels = [0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1]
+all_labels = [0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0]
 # set up array for image file names
 all_image_names = []
 

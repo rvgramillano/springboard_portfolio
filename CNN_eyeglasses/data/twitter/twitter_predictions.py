@@ -164,9 +164,9 @@ def prediction_plot(predictions):
 		plt.axis('off')
 		plt.title('Predicted class: %s' % predicted_class)
 		fig.text(.5, .05, txt, ha='center')
-		plt.savefig('/Users/rvg/Documents/springboard_ds/springboard_portfolio/CNN_eyeglasses/data/twitter/profile_pics/predictions/%s_prediction.png'%image_name, dpi=350)
+		plt.savefig('/Users/rvg/Documents/springboard_ds/springboard_portfolio/CNN_eyeglasses/data/twitter/profile_pics/predictions/%s_prediction.png'%image_name[:2], dpi=350)
 		plt.show()
-		raw_input('...')
+		#raw_input('...')
 		plt.close()
 
 prediction_dict = {0: 'No Eyeglasses (0)', 1: 'Eyeglasses (1)'}

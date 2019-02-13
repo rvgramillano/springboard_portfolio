@@ -9,7 +9,7 @@ import PIL.ImageOps
 from PIL import Image
 
 # using avatars.io service to retrieve and save twitter profile pictures
-usernames = ['nntaleb', 'SimonDeDeo', 'AndrewYNg', 'Mangan150', 'ericries', 'AOC', 'mims', 'RayDalio', 'gvanrossum', 'alansmurray', 'RandomlyWalking', 'belril', 'geoffreyfowler', 'chrmanning', 'hsu_steve', 'sacca', 'pauldaugh']
+usernames = ['nntaleb', 'SimonDeDeo', 'AndrewYNg', 'EricTopol', 'ericries', 'AOC', 'mims', 'RayDalio', 'gvanrossum', 'alansmurray', 'RandomlyWalking', 'belril', 'geoffreyfowler', 'chrmanning', 'hsu_steve', 'sacca', 'pauldaugh', 'BillGates', 'hugo_larochelle', 'hmason']
 #celebA size = 178 x 218
 for j,username in enumerate(usernames):
 	print username
