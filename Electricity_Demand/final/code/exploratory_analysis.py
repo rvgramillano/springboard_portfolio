@@ -32,7 +32,6 @@ print(df.corr()['demand'].sort_values(ascending=False)[1:])
 # get r^2 values per column and print
 demand_r = {}
 for col in df.columns:
-	#if col == 'hourlyskyconditions': continue
 	if col != 'demand':
 		slope, intercept, r_value, p_value, std_err = scipy.stats.stats.linregress(df['demand'], df[col])
 		demand_r[col] = r_value**2
